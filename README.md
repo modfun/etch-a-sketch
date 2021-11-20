@@ -1,2 +1,2 @@
-# etch-a-sketch
-The Odin Project demonstrating  DOM manipulation skills in JavaScript
+# Etch-A-Sketch
+  The Odin Project's challenge to create something akin to sketchpad or etch a sketch demonstrating DOM manipulation skills in JavaScript.
