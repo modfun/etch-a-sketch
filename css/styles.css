@@ -1,0 +1,32 @@
+body {
+    background-color: burlywood;
+}
+.container {
+    outline: 2px solid red;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: turquoise;
+    margin: 0px auto;
+    width: 768px;
+    height: auto;
+}
+
+.row {
+    outline: 2px solid yellow;
+    flex: 1 0 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.square {
+    outline: 2px solid green;
+    flex: 1 0 auto;
+    width: 48px;
+    height: 48px;
+    color: white;
+    background-color: white;
+}
