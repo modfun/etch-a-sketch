@@ -4,8 +4,9 @@ const container = document.getElementsByClassName("container")[0];
 const panel = document.querySelector('.panel');
 const rows = 16;
 const cols = 16;
-const buttonClasses = ['hoverMode', 'selectMode'];
-const buttonText = ['Hover Mode', 'Select Mode'];
+
+const buttonClasses = ['hoverMode', 'selectMode', 'eraserMode'];
+const buttonText = ['Hover Mode', 'Select Mode', 'Eraser Mode'];
 
 let color = 'blue';
 let currentMode = null;
@@ -16,19 +17,24 @@ console.log( "[Created] " +
     createGrid( rows, cols, container) + " Squares");
 console.log("[Created] " + 
     createButtons( buttonClasses, buttonText, panel) + " Buttons");
-// document.body.appendChild( container);
 
+//function.bind allows us to pass an argument to function when used
+//as a callback argument to addEventListener().
+//function.bind() creates a new reference to the function.
+//store the reference to use with removeEventListener() which
+//only accepts the same reference that addEventListener() took.
 let hoverModeBind = hoverMode.bind( null, color);
 let selectModeBind = selectMode.bind( null, color);
+let eraserModeBind = selectMode.bind( null, 'white');
 
 container.addEventListener( 'mousemove', hoverModeBind);
-// container.removeEventListener( 'mousemove', hoverModeBind);
 currentEvent = 'mousemove';
 currentMode = hoverModeBind;
 
-panel.addEventListener( 'click', getMode.bind(null, hoverModeBind, selectModeBind, color, container)); 
+panel.addEventListener( 'click', getMode.bind(
+    null, hoverModeBind, selectModeBind, eraserModeBind, color, container)); 
 
-function getMode( hoverModeBind, selectModeBind, color, container, event) {
+function getMode( hoverModeBind, selectModeBind, eraserModeBind, color, container, event) {
     console.log(event.target.className + ':1');
     if (event.target.className === 'hoverMode') {
         console.log(currentEvent + ":2");
@@ -43,6 +49,13 @@ function getMode( hoverModeBind, selectModeBind, color, container, event) {
         container.addEventListener( 'click', selectModeBind);
         currentEvent = 'click';
         currentMode = selectModeBind;
+    }
+    else if (event.target.className === 'eraserMode') {
+        console.log(currentEvent + ":4");
+        container.removeEventListener( currentEvent, currentMode);
+        container.addEventListener( 'click', eraserModeBind);
+        currentEvent = 'click';
+        currentMode = eraserModeBind;
     }
 }
 
