@@ -66,9 +66,9 @@ button:hover {
     cursor: crosshair;
 }
 
-.picker:hover {
-    cursor: alias;
-}
-.slider:hover {
+.brushSize:hover, .gridSize:hover, .windowSize:hover {
     cursor: grab;
+}
+.color:hover .eraserColor:hover, .boardColor:hover{
+    cursor: alias;
 }
