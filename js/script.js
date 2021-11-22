@@ -5,15 +5,16 @@ const panel = document.querySelector('.panel');
 const sliders = document.querySelector('.sliders');
 const color = document.querySelector('.color').value = '#000000';
 const eraserColor = document.querySelector('.eraserColor').value = '#ffffff';
+const boardColor = document.querySelector('.boardColor').value = '#ffffff'
 const brushSize = document.querySelector('.brushSize').value = '1';
 const gridSize = document.querySelector('.gridSize').value = '16';
 const windowSize = document.querySelector('.windowSize').value = '640px';
 
-const buttonClasses = ['hoverMode', 'selectMode', 'eraserMode'];
-const buttonText = ['Hover Mode', 'Select Mode', 'Eraser Mode'];
+const buttonClasses = ['hoverMode', 'selectMode', 'randomMode', 'darken', 'lighten', 'toggleGrid', 'eraserMode' ,'clearMode'];
+const buttonText = ['Hover', 'Select', 'Random', 'Darkening', 'Lightening', 'Grid', 'Eraser', 'Clear'];
 
 let data = { 
-    color: color, eraserColor: eraserColor,
+    color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
     brushSize: brushSize, currentMode: null, currentEvent: '',
     rows: gridSize, cols: gridSize, windowSize: windowSize
 };
@@ -31,18 +32,12 @@ console.log("[Created] " +
 sliders.addEventListener( 'input', useSliderValues);
 
 let hoverModeBind = hoverMode.bind( null);
-let selectModeBind = selectMode.bind( null, false);
-let eraserModeBind = selectMode.bind( null, true);
-
-// container.addEventListener( 'mousemove', hoverModeBind);
-// currentEvent = 'mousemove';
-// currentMode = hoverModeBind;
+let selectModeBind = selectMode.bind( null);
 
 panel.addEventListener( 'click', getMode.bind(
-    null, hoverModeBind, selectModeBind, eraserModeBind, container)); 
+    null, hoverModeBind, selectModeBind, container)); 
 
-
-function getMode( hoverModeBind, selectModeBind, eraserModeBind, container, event) {
+function getMode( hoverModeBind, selectModeBind, container, event) {
     console.log(event.target.className + ':1');
 
     if (event.target.className === 'hoverMode') {
@@ -65,19 +60,24 @@ function getMode( hoverModeBind, selectModeBind, eraserModeBind, container, even
     }
     else if (event.target.className === 'eraserMode') {
         console.log(data['currentEvent'] + ":4");
-        container.removeEventListener( data['currentEvent'], data['currentMode']);
-
-        container.addEventListener( 'click', eraserModeBind);
-
-        data['currentEvent'] = 'click';
-        data['currentMode'] = eraserModeBind;
+        eraserModeToggle();
+        if (data['randomColorState']) {
+            randomColorToggle();
+        }
+    }
+    else if (event.target.className === 'randomMode') {
+        console.log( data['currentEvent'] + ":5");
+        randomColorToggle();
+        if (data['eraserModeState']) {
+            eraserModeToggle();
+        }
     }
 }
 
 function updateGrid() {
-    console.log( '[removed] ' + 
+    console.log( '[Removed] ' + 
         removeAllChildern( container));
-    console.log( '[created] ' +
+    console.log( '[Created] ' +
         createGrid( data['rows'], data['cols'], container));
 }
 
@@ -123,12 +123,11 @@ function createButtons( classes, text, target) {
 }
 
 function hoverMode( event) {
-    console.log('hover mode');
-    event.target.style['background-color'] = data['color'];
+    selectMode( event);
 }
 
-function selectMode( isEraserMode, event) {
-    let color = isEraserMode ? data['eraserColor'] : data['color'];
+function selectMode( event) {
+    let color = getCurrentColor();
     let brushSize = data['brushSize']
     let rows = data['rows'];
     let cols = data['cols'];
@@ -158,7 +157,7 @@ function selectMode( isEraserMode, event) {
         let x = ( col_start < 0) ? 0: col_start;
         while ( x <= col_end) {
             let square = rowNode.childNodes.item(x);
-            square.style['background-color'] = color;
+            square.style['background-color'] = getCurrentColor();
             x++;
         }
         y++;
@@ -189,4 +188,45 @@ function updateContainer() {
     container.style['width'] = data['windowSize'];
     container.style['height'] = data['windowSize'];
     console.log("[changed] " + data['windowSize']);
+}
+
+function eraserModeToggle() {
+    if ( data['eraserModeState']) {
+        data['eraserModeState'] = false;
+    }
+    else {
+        data['eraserModeState'] = true;
+    }
+}
+
+function randomColorToggle() {
+    if ( data['randomColorState']) {
+        data['randomColorState'] = false;
+    }
+    else {
+        data['randomColorState'] = true;
+    }
+    console.log( '[set random] ' + data['randomColorState'] + ' ' + data['randomColor']);
+}
+
+function updateRandomColor() {
+    if ( data['randomColorState']) {
+            data['randomColor'] = '#'+Math.floor(Math.random()*16777215).toString(16);
+    }
+    return data['randomColor'];
+}
+
+function getCurrentColor() {
+    let color = '#000000';
+    if ( data['eraserModeState']) {
+        color = data['eraserColor'];
+    }
+    else  if ( data['randomColorState']) {
+        updateRandomColor();
+        color = data['randomColor'];
+    }
+    else {
+        color = data['color']
+    }
+    return color;
 }
