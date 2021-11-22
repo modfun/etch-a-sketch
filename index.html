@@ -5,15 +5,16 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/script.js" defer></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     </head>
 
     <body>
         <div class="control">
             <div class="sliders">
-                <input class="color" type="color" value="#000000">
-                <input class="eraserColor" type="color" value="#ffffff">
-                <input class="boardColor" type="color" value="#ffffff">
-                <input class="brushSize" type="range"  value="1" min="1" max="15" step="2" list="brushSettings">
+                <input class="color picker" type="color" value="#000000">
+                <input class="eraserColor picker" type="color" value="#ffffff">
+                <input class="boardColor picker" type="color" value="#ffffff">
+                <input class="brushSize slider" type="range"  value="1" min="1" max="15" step="2" list="brushSettings">
                 <datalist id=brushSettings>
                     <option>1</option>
                     <option>3</option>
@@ -24,15 +25,15 @@
                     <option>13</option>
                     <option>15</option>
                 </datalist>
-                <input class="gridSize" type="range"  value="16" min="2" max="64" step="2">
-                <input class="windowSize" type="range"  value="640" min="160" max="1048" step="32">
+                <input class="gridSize slider" type="range"  value="16" min="2" max="64" step="2">
+                <input class="windowSize slider" type="range"  value="640" min="160" max="1048" step="32">
             </div>
             <div class="panel"></div>
         </div>
         <div class="container"></div>
         <div class="notes">
-            <p>Tip;</p>
-            <p>Copyright © 2021 modfun (github)</p>
+            <p class="tip">Tip: <em>Doble Click</em> to fill and <em>Hold Left Click</em> to hover over the board.</p>
+            <p class="footer">Copyright © 2021 <a href="https://github.com/modfun"><i class="fa fa-github fa_custom fa-2x"></i></a></p>
         </div>
     </body>
 </html>

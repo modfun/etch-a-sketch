@@ -45,3 +45,30 @@ body {
     color: white;
     background-color: white;
 }
+
+a:link, i {
+    color: black;
+}
+
+i:hover {
+    color: #AEC6CF;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+button:hover {
+    color: gray;
+    transition: 0.4s;
+    cursor:pointer;
+}
+
+.container:hover {
+    cursor: crosshair;
+}
+
+.picker:hover {
+    cursor: alias;
+}
+.slider:hover {
+    cursor: grab;
+}
