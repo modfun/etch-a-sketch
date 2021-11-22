@@ -1,32 +1,47 @@
 body {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
     background-color: burlywood;
+    padding: 32px;
 }
 .container {
     outline: 2px solid red;
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
     justify-content: flex-start;
     background-color: turquoise;
-    margin: 0px auto;
-    width: 768px;
-    height: auto;
+    /* margin: 0px auto; */
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 640px;
+    height: 640px;
+}
+
+.control {
+    outline: 2px solid black;
+}
+
+.sliders{
+    outline: 2px solid blue;
+}
+
+.panel{
+    outline: 2px solid pink;
 }
 
 .row {
     outline: 2px solid yellow;
-    flex: 1 0 100%;
+    flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
-    align-items: center;
     justify-content: center;
 }
 
 .square {
     outline: 2px solid green;
-    flex: 1 0 auto;
-    width: 48px;
-    height: 48px;
+    flex: 1 1 auto;
     color: white;
     background-color: white;
 }

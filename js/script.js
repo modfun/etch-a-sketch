@@ -7,19 +7,19 @@ const color = document.querySelector('.color').value = '#000000';
 const eraserColor = document.querySelector('.eraserColor').value = '#ffffff';
 const brushSize = document.querySelector('.brushSize').value = '1';
 const gridSize = document.querySelector('.gridSize').value = '16';
+const windowSize = document.querySelector('.windowSize').value = '640px';
 
 const buttonClasses = ['hoverMode', 'selectMode', 'eraserMode'];
 const buttonText = ['Hover Mode', 'Select Mode', 'Eraser Mode'];
 
-let data = { color: color, eraserColor: eraserColor,
+let data = { 
+    color: color, eraserColor: eraserColor,
     brushSize: brushSize, currentMode: null, currentEvent: '',
-    rows: gridSize, cols: gridSize};
-let rows = data['rows'];
-let cols = data['cols'];
+    rows: gridSize, cols: gridSize, windowSize: windowSize
+};
 
+updateGrid();
 
-console.log( "[Created] " + 
-    createGrid( data['rows'], data['cols'], container) + " Squares");
 console.log("[Created] " + 
     createButtons( buttonClasses, buttonText, panel) + " Buttons");
 
@@ -28,7 +28,7 @@ console.log("[Created] " +
 //function.bind() creates a new reference to the function.
 //store the reference to use with removeEventListener() which
 //only accepts the same reference that addEventListener() took.
-sliders.addEventListener( 'input', changeSliderValues);
+sliders.addEventListener( 'input', useSliderValues);
 
 let hoverModeBind = hoverMode.bind( null);
 let selectModeBind = selectMode.bind( null, false);
@@ -74,6 +74,13 @@ function getMode( hoverModeBind, selectModeBind, eraserModeBind, container, even
     }
 }
 
+function updateGrid() {
+    console.log( '[removed] ' + 
+        removeAllChildern( container));
+    console.log( '[created] ' +
+        createGrid( data['rows'], data['cols'], container));
+}
+
 function createGrid( rowSize, colSize, target) {
     let i = 0;
     while ( i < rowSize) {
@@ -90,7 +97,19 @@ function createGrid( rowSize, colSize, target) {
     return rowSize*colSize;
 }
 
-function removeGrid( ) {
+function removeAllChildern( parent) {
+    let elements = 0;
+    while ( parent.firstChild) {
+        while ( parent.firstChild.firstChild) {
+            parent.firstChild.removeChild( parent.firstChild.firstChild);
+            //removes a square as long there's a square
+            elements++;
+        }
+        parent.removeChild( parent.firstChild);
+        //removes a row as long there's a row
+        elements++;
+    }
+    return elements;
 }
 
 function createButtons( classes, text, target) {
@@ -146,14 +165,28 @@ function selectMode( isEraserMode, event) {
     }
 }
 
-function changeSliderValues( event) {
+function useSliderValues( event) {
     if ( event.target.className === 'color') {
         console.log(data['color'] = event.target.value);
+    }
+    else if ( event.target.className === 'eraserColor') {
+        console.log(data['eraserColor'] = event.target.value);
     }
     else if ( event.target.className === 'brushSize') {
         console.log(data['brushSize'] = event.target.value);
     }
     else if ( event.target.className === 'gridSize') {
         console.log(data['rows'] = data['cols'] = event.target.value);
+        updateGrid();
     }
+    else if ( event.target.className === 'windowSize') {
+        console.log(data['windowSize'] = event.target.value + 'px');
+        updateContainer();
+    }
+}
+
+function updateContainer() {
+    container.style['width'] = data['windowSize'];
+    container.style['height'] = data['windowSize'];
+    console.log("[changed] " + data['windowSize']);
 }
