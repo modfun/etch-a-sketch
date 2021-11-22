@@ -10,12 +10,12 @@ const brushSize = document.querySelector('.brushSize').value = '1';
 const gridSize = document.querySelector('.gridSize').value = '16';
 const windowSize = document.querySelector('.windowSize').value = '640px';
 
-const buttonClasses = ['hoverMode', 'selectMode', 'randomMode', 'darken', 'lighten', 'toggleGrid', 'eraserMode' ,'clearMode'];
-const buttonText = ['Hover', 'Select', 'Random', 'Darkening', 'Lightening', 'Grid', 'Eraser', 'Clear'];
+const buttonClasses = ['hoverMode', 'selectMode', 'randomMode', 'darken', 'lighten', 'toggleGrid', 'eraserMode' ,'clearMode', 'restAll'];
+const buttonText = ['Hover', 'Select', 'Random', 'Darkening', 'Lightening', 'Grid', 'Eraser', 'Clear', 'Rest'];
 
 let data = { 
     color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
-    brushSize: brushSize, currentMode: null, currentEvent: '',
+    boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
     rows: gridSize, cols: gridSize, windowSize: windowSize
 };
 
@@ -91,8 +91,16 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
     else if (event.target.className === 'toggleGrid') {
     }
     else if (event.target.className === 'clearMode') {
+        console.log( data['currentEvent'] + ":0");
+        updateGrid();
     }
-
+    else if (event.target.className === 'restAll') {
+        console.log( data['currentEvent'] + ":00");
+        restAll();
+    }
+    else {
+        console.log( "out of catch");
+    }
 }
 
 function updateGrid() {
@@ -110,6 +118,7 @@ function createGrid( rowSize, colSize, target) {
         for (let j = 0; j < colSize; ++j) {
             const square = document.createElement('div');
             square.classList.add("square");
+            square.style['background-color'] = data['boardColor'];
             row.appendChild( square);
         }
         target.appendChild( row);
@@ -192,6 +201,10 @@ function useSliderValues( event) {
     else if ( event.target.className === 'eraserColor') {
         console.log(data['eraserColor'] = event.target.value);
     }
+    else if ( event.target.className === 'boardColor') {
+        console.log(data['boardColor'] = event.target.value);
+        updateGrid()
+    }
     else if ( event.target.className === 'brushSize') {
         console.log(data['brushSize'] = event.target.value);
     }
@@ -259,4 +272,25 @@ function getCurrentColor() {
         color = data['color']
     }
     return color;
+}
+
+function restAll( event) {
+    //rest all to default values
+    const color = document.querySelector('.color').value = '#000000';
+    const eraserColor = document.querySelector('.eraserColor').value = '#ffffff';
+    const boardColor = document.querySelector('.boardColor').value = '#ffffff'
+    const brushSize = document.querySelector('.brushSize').value = '1';
+    const gridSize = document.querySelector('.gridSize').value = '16';
+    const windowSize = document.querySelector('.windowSize').value = '640px';
+
+    let default_data = { 
+        color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
+        boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
+        rows: gridSize, cols: gridSize, windowSize: windowSize
+    };
+    data = default_data;
+
+    updateContainer();
+    updateGrid();
+    normalModeToggle();
 }
