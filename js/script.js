@@ -37,6 +37,16 @@ let selectModeBind = selectMode.bind( null);
 panel.addEventListener( 'click', getMode.bind(
     null, hoverModeBind, selectModeBind, container)); 
 
+//dbl click to select Mode or click and drag to hover Mode
+container.addEventListener( 'dblclick', selectModeBind);
+container.addEventListener( 'mousedown', (e) => {
+    container.addEventListener( 'mousemove', hoverModeBind);
+    e.preventDefault()
+});
+container.addEventListener( 'mouseup', (e) => {
+    container.removeEventListener( 'mousemove', hoverModeBind);
+});
+
 function getMode( hoverModeBind, selectModeBind, container, event) {
     console.log(event.target.className + ':1');
 
@@ -48,6 +58,7 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
 
         data['currentEvent'] = 'mousemove';
         data['currentMode'] = hoverModeBind;
+        normalModeToggle();
     }
     else if (event.target.className === 'selectMode') {
         console.log(data['currentEvent'] + ":3");
@@ -57,6 +68,7 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
 
         data['currentEvent'] = 'click';
         data['currentMode'] = selectModeBind;
+        normalModeToggle();
     }
     else if (event.target.className === 'eraserMode') {
         console.log(data['currentEvent'] + ":4");
@@ -72,6 +84,15 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
             eraserModeToggle();
         }
     }
+    else if (event.target.className === 'darken') {
+    }
+    else if (event.target.className === 'lighten') {
+    }
+    else if (event.target.className === 'toggleGrid') {
+    }
+    else if (event.target.className === 'clearMode') {
+    }
+
 }
 
 function updateGrid() {
@@ -188,6 +209,15 @@ function updateContainer() {
     container.style['width'] = data['windowSize'];
     container.style['height'] = data['windowSize'];
     console.log("[changed] " + data['windowSize']);
+}
+
+function normalModeToggle() {
+    if ( data['eraserModeState']) {
+        eraserModeToggle()
+    }
+    if ( data['randomColorState']) {
+        randomColorToggle()
+    }
 }
 
 function eraserModeToggle() {
