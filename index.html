@@ -9,6 +9,22 @@
 
     <body>
         <div class="container"></div>
+        <div class="sliders">
+            <input class="color" type="color" value="#000000">
+            <input class="eraserColor" type="color" value="#ffffff">
+            <input class="brushSize" type="range"  value="1" min="1" max="15" step="2" list="brushSettings">
+            <datalist id=brushSettings>
+                <option>1</option>
+                <option>3</option>
+                <option>5</option>
+                <option>7</option>
+                <option>9</option>
+                <option>11</option>
+                <option>13</option>
+                <option>15</option>
+            </datalist>
+            <input class="gridSize" type="range"  value="16" min="2" max="64" step="2">
+        </div>
         <div class="panel"></div>
     </body>
 </html>
