@@ -2,21 +2,24 @@
 
 const container = document.getElementsByClassName("container")[0];
 const panel = document.querySelector('.panel');
-const rows = 16;
-const cols = 16;
+const sliders = document.querySelector('.sliders');
+const color = document.querySelector('.color').value = '#000000';
+const eraserColor = document.querySelector('.eraserColor').value = '#ffffff';
+const brushSize = document.querySelector('.brushSize').value = '1';
+const gridSize = document.querySelector('.gridSize').value = '16';
 
 const buttonClasses = ['hoverMode', 'selectMode', 'eraserMode'];
 const buttonText = ['Hover Mode', 'Select Mode', 'Eraser Mode'];
 
-let color = 'blue';
-let eraserColor = 'white';
-let brushSize = 4;
-let currentMode = null;
-let currentEvent = '';
+let data = { color: color, eraserColor: eraserColor,
+    brushSize: brushSize, currentMode: null, currentEvent: '',
+    rows: gridSize, cols: gridSize};
+let rows = data['rows'];
+let cols = data['cols'];
 
 
 console.log( "[Created] " + 
-    createGrid( rows, cols, container) + " Squares");
+    createGrid( data['rows'], data['cols'], container) + " Squares");
 console.log("[Created] " + 
     createButtons( buttonClasses, buttonText, panel) + " Buttons");
 
@@ -25,39 +28,49 @@ console.log("[Created] " +
 //function.bind() creates a new reference to the function.
 //store the reference to use with removeEventListener() which
 //only accepts the same reference that addEventListener() took.
-let hoverModeBind = hoverMode.bind( null, color);
-let selectModeBind = selectMode.bind( null, color, brushSize, rows, cols);
-let eraserModeBind = selectMode.bind( null, eraserColor, brushSize, rows, cols);
+sliders.addEventListener( 'input', changeSliderValues);
 
-container.addEventListener( 'mousemove', hoverModeBind);
-currentEvent = 'mousemove';
-currentMode = hoverModeBind;
+let hoverModeBind = hoverMode.bind( null);
+let selectModeBind = selectMode.bind( null, false);
+let eraserModeBind = selectMode.bind( null, true);
+
+// container.addEventListener( 'mousemove', hoverModeBind);
+// currentEvent = 'mousemove';
+// currentMode = hoverModeBind;
 
 panel.addEventListener( 'click', getMode.bind(
-    null, hoverModeBind, selectModeBind, eraserModeBind, color, container)); 
+    null, hoverModeBind, selectModeBind, eraserModeBind, container)); 
 
-function getMode( hoverModeBind, selectModeBind, eraserModeBind, color, container, event) {
+
+function getMode( hoverModeBind, selectModeBind, eraserModeBind, container, event) {
     console.log(event.target.className + ':1');
+
     if (event.target.className === 'hoverMode') {
-        console.log(currentEvent + ":2");
-        container.removeEventListener( currentEvent, currentMode);
+        console.log(data['currentEvent'] + ":2");
+        container.removeEventListener( data['currentEvent'], data['currentMode']);
+
         container.addEventListener( 'mousemove', hoverModeBind);
-        currentEvent = 'mousemove';
-        currentMode = hoverModeBind;
+
+        data['currentEvent'] = 'mousemove';
+        data['currentMode'] = hoverModeBind;
     }
     else if (event.target.className === 'selectMode') {
-        console.log(currentEvent + ":3");
-        container.removeEventListener( currentEvent, currentMode);
+        console.log(data['currentEvent'] + ":3");
+        container.removeEventListener( data['currentEvent'], data['currentMode']);
+
         container.addEventListener( 'click', selectModeBind);
-        currentEvent = 'click';
-        currentMode = selectModeBind;
+
+        data['currentEvent'] = 'click';
+        data['currentMode'] = selectModeBind;
     }
     else if (event.target.className === 'eraserMode') {
-        console.log(currentEvent + ":4");
-        container.removeEventListener( currentEvent, currentMode);
+        console.log(data['currentEvent'] + ":4");
+        container.removeEventListener( data['currentEvent'], data['currentMode']);
+
         container.addEventListener( 'click', eraserModeBind);
-        currentEvent = 'click';
-        currentMode = eraserModeBind;
+
+        data['currentEvent'] = 'click';
+        data['currentMode'] = eraserModeBind;
     }
 }
 
@@ -77,6 +90,9 @@ function createGrid( rowSize, colSize, target) {
     return rowSize*colSize;
 }
 
+function removeGrid( ) {
+}
+
 function createButtons( classes, text, target) {
     for (let i = 0; i < classes.length; ++i) {
         const button = document.createElement('button');
@@ -87,49 +103,57 @@ function createButtons( classes, text, target) {
     return classes.length;
 }
 
-function hoverMode( color, event) {
+function hoverMode( event) {
     console.log('hover mode');
-    event.target.style['background-color'] = color;
+    event.target.style['background-color'] = data['color'];
 }
 
-function selectMode( color, brushSize, rows, cols, event) {
-    console.log('selct mode');
-    if ( brushSize === 0) {
-        event.target.style['background-color'] = color;
-    }
-    else {
-        //get the coordinates of the current target square
-        let col = Array.prototype.indexOf.call(
-            event.target.parentNode.childNodes, event.target);
-        let row = Array.prototype.indexOf.call(
-            event.target.parentNode.parentNode.childNodes, event.target.parentNode);
+function selectMode( isEraserMode, event) {
+    let color = isEraserMode ? data['eraserColor'] : data['color'];
+    let brushSize = data['brushSize']
+    let rows = data['rows'];
+    let cols = data['cols'];
 
-        //calculate the area of effect to perfurme the action
-        //make sure nothing goes out of bounds
-        const row_start = row - Math.trunc( brushSize / 2);
-        let row_end = row + Math.trunc( brushSize / 2);
-        row_end = ( row_end >= rows) ? rows - 1 : row_end; //>= because we start from zero
+    console.log('selct mode' + brushSize + color);
+    //get the coordinates of the current target square
+    let col = Array.prototype.indexOf.call(
+        event.target.parentNode.childNodes, event.target);
+    let row = Array.prototype.indexOf.call(
+        event.target.parentNode.parentNode.childNodes, event.target.parentNode);
 
-        const col_start = col - Math.trunc( brushSize / 2);
-        let col_end = col + Math.trunc( brushSize / 2);
-        col_end = ( col_end >= cols) ? cols - 1 : col_end;
-        console.log(row);
-        console.log(col);
+    //calculate the area of effect to perfurme the action
+    //make sure nothing goes out of bounds
+    const row_start = row - Math.trunc( brushSize / 2);
+    let row_end = row + Math.trunc( brushSize / 2);
+    row_end = ( row_end >= rows) ? rows - 1 : row_end; //>= because we start from zero
 
-        //start traversing according to the calculatd bounds
-        let y = ( row_start < 0) ? 0: row_start;    //prevent going offbounds
-        while ( y <= row_end) {
-            let rowNode = event.target.parentNode.parentNode.childNodes.item(y);
-            console.log(rowNode);
+    const col_start = col - Math.trunc( brushSize / 2);
+    let col_end = col + Math.trunc( brushSize / 2);
+    col_end = ( col_end >= cols) ? cols - 1 : col_end;
 
-            let x = ( col_start < 0) ? 0: col_start;
-            while ( x <= col_end) {
-                let square = rowNode.childNodes.item(x);
-                console.log(square);
-                square.style['background-color'] = color;
-                x++;
-            }
-            y++;
+    //start traversing according to the calculatd bounds
+    let y = ( row_start < 0) ? 0: row_start;    //prevent going offbounds
+    while ( y <= row_end) {
+        let rowNode = event.target.parentNode.parentNode.childNodes.item(y);
+
+        let x = ( col_start < 0) ? 0: col_start;
+        while ( x <= col_end) {
+            let square = rowNode.childNodes.item(x);
+            square.style['background-color'] = color;
+            x++;
         }
+        y++;
+    }
+}
+
+function changeSliderValues( event) {
+    if ( event.target.className === 'color') {
+        console.log(data['color'] = event.target.value);
+    }
+    else if ( event.target.className === 'brushSize') {
+        console.log(data['brushSize'] = event.target.value);
+    }
+    else if ( event.target.className === 'gridSize') {
+        console.log(data['rows'] = data['cols'] = event.target.value);
     }
 }
