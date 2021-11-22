@@ -16,7 +16,7 @@ const buttonText = ['Hover', 'Select', 'Random', 'Darkening', 'Lightening', 'Gri
 let data = { 
     color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
     boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
-    rows: gridSize, cols: gridSize, windowSize: windowSize
+    rows: gridSize, cols: gridSize, windowSize: windowSize, gridState: true
 };
 
 updateGrid();
@@ -89,13 +89,15 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
     else if (event.target.className === 'lighten') {
     }
     else if (event.target.className === 'toggleGrid') {
+        console.log( data['currentEvent'] + ":8");
+        toggleBorders();
     }
     else if (event.target.className === 'clearMode') {
-        console.log( data['currentEvent'] + ":0");
+        console.log( data['currentEvent'] + ":9");
         updateGrid();
     }
     else if (event.target.className === 'restAll') {
-        console.log( data['currentEvent'] + ":00");
+        console.log( data['currentEvent'] + ":0");
         restAll();
     }
     else {
@@ -274,6 +276,28 @@ function getCurrentColor() {
     return color;
 }
 
+function toggleBorders() {
+    if ( data['gridState']) {
+        data['gridState'] = false;
+    }
+    else {
+        data['gridState'] = true;
+    }
+    updateGridBorders();
+}
+
+function updateGridBorders() {
+    let boardermode = '#ffffff';
+    if ( data['gridState']) {
+        boardermode = '#808080';
+    }
+
+    let squares = document.querySelectorAll('.square');
+    for ( let i = 0; i < squares.length; ++i) {
+        squares[i].style['outline'] = '2px solid ' + boardermode;
+    }
+}
+
 function restAll( event) {
     //rest all to default values
     const color = document.querySelector('.color').value = '#000000';
@@ -286,11 +310,12 @@ function restAll( event) {
     let default_data = { 
         color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
         boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
-        rows: gridSize, cols: gridSize, windowSize: windowSize
+        rows: gridSize, cols: gridSize, windowSize: windowSize, gridSize: true
     };
     data = default_data;
 
     updateContainer();
     updateGrid();
     normalModeToggle();
+    updateGridBorders();
 }

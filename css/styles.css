@@ -7,11 +7,11 @@ body {
     padding: 32px;
 }
 .container {
-    outline: 2px solid red;
+    outline: 2px solid black;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
-    background-color: turquoise;
+    background-color: white;
     /* margin: 0px auto; */
     margin-left: 8px;
     margin-bottom: 8px;
@@ -32,7 +32,7 @@ body {
 }
 
 .row {
-    outline: 2px solid yellow;
+    /* outline: 2px solid yellow; */
     flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
@@ -40,7 +40,7 @@ body {
 }
 
 .square {
-    outline: 2px solid green;
+    outline: 2px solid gray;
     flex: 1 1 auto;
     color: white;
     background-color: white;
