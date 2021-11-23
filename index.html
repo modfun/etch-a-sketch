@@ -3,18 +3,22 @@
     <head>
         <title>Etch A Sketch</title>
         <meta charset="utf-8">
+
         <link rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/script.js" defer></script>
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     </head>
 
     <body>
-        <script>0</script>
+        <script>0</script>      <!-- fix flash loading in old firefox browsers -->
         <div class="main">
             <div class="control">
+
                 <h3>Etch The Sketch</h3>
                 <div class="sliders">
+
                     <div class="colors">
                         <label for="c1">Brush</label>
                         <input id="c1" class="color" type="color" value="#000000">
@@ -23,6 +27,7 @@
                         <label for="c3">Board</label>
                         <input id="c3" class="boardColor" type="color" value="#ffffff">
                     </div>
+
                     <div class="sizes">
                         <label for="s1">Brush</label>
                         <input id="s1" class="brushSize" type="range"  value="1" min="1" max="15" step="2" list="brushSettings">
@@ -42,10 +47,13 @@
                         <input id="s3" class="windowSize" type="range"  value="640" min="160" max="1048" step="32">
                     </div>
                 </div>
+
                 <div class="panel"></div>
             </div>
+
             <div class="container"></div>
         </div>
+
         <div class="notes">
             <p class="tip">Tip: <em>Doble Click</em> to fill and <em>Hold Left Click</em> to hover over the board.
                                 <em>Hold Right Click</em> to use the eraser.</p>
