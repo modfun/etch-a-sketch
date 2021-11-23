@@ -1,38 +1,87 @@
 body {
+    background-color:chocolate;
+    margin: 0;
+    padding-top: 0;
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-between;
+}
+
+.main {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
     background-color: burlywood;
-    padding: 32px;
+    padding: 8px;
 }
 .container {
-    outline: 2px solid black;
+    outline: 8px solid black;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     background-color: white;
-    /* margin: 0px auto; */
-    margin-left: 8px;
-    margin-bottom: 8px;
     width: 640px;
     height: 640px;
+    margin-left: 100px;
 }
 
 .control {
     outline: 2px solid black;
+    background-color: firebrick;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 4px;
+    gap: 8px;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    min-height: 100vh;
+    min-width: 280px
+}
+
+h3 {
+    color: gold;
+    font-size: 28px;
+    font-family: Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+label {
+    color:honeydew
 }
 
 .sliders{
-    outline: 2px solid blue;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 380;
+    height: auto;
+    padding: 8px;
+}
+
+.colors {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.sizes {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 
 .panel{
-    outline: 2px solid pink;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 
 .row {
-    /* outline: 2px solid yellow; */
     flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
@@ -56,6 +105,15 @@ i:hover {
     cursor: pointer;
 }
 
+button {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: goldenrod;
+    border: none;
+    width: 126px;
+    height: 28px;
+}
+
 button:hover {
     color: gray;
     transition: 0.4s;
@@ -69,6 +127,29 @@ button:hover {
 .brushSize:hover, .gridSize:hover, .windowSize:hover {
     cursor: grab;
 }
+
 .color:hover .eraserColor:hover, .boardColor:hover{
     cursor: alias;
+}
+
+.tip {
+    font-size: 12px;
+    text-align: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row nowrap;
+    gap: 8px;
+    font-size: 14px;
+    text-align: center;
+    max-height: 32px;
+    margin-bottom: 0;
+}
+
+.notes {
+    max-height: 15vh;
+    margin-bottom: 0;
 }
