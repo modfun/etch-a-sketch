@@ -1,5 +1,5 @@
 body {
-    background-color:chocolate;
+    background-color:#a2b9bc;
     margin: 0;
     padding-top: 0;
     display: flex;
@@ -11,7 +11,7 @@ body {
     flex-flow: row nowrap;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: burlywood;
+    background-color: #b2ad7f;
     padding: 8px;
 }
 .container {
@@ -22,12 +22,14 @@ body {
     background-color: white;
     width: 640px;
     height: 640px;
+    margin-top: 8px;
     margin-left: 100px;
+    box-shadow: 15px 10px 10px #6b5b95;
 }
 
 .control {
     outline: 2px solid black;
-    background-color: firebrick;
+    background-color: #878f99;
     display: flex;
     flex-flow: column nowrap;
     padding: 4px;
@@ -35,12 +37,12 @@ body {
     top: 0;
     left: 0;
     height: 100vh;
-    min-height: 100vh;
-    min-width: 280px
+    min-width: 280px;
+    border-radius: 8px;
 }
 
 h3 {
-    color: gold;
+    color: #6b5b95;
     font-size: 28px;
     font-family: Cochin, Georgia, Times, 'Times New Roman', serif;
     text-align: center;
@@ -79,6 +81,8 @@ label {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    border: none;
+    border-radius: 80px;
 }
 
 .row {
@@ -108,7 +112,7 @@ i:hover {
 button {
     font-size: 16px;
     font-weight: 700;
-    background-color: goldenrod;
+    background-color: #6b5b95;
     border: none;
     width: 126px;
     height: 28px;
