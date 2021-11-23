@@ -121,6 +121,7 @@ function updateGrid() {
         removeAllChildern( container));
     console.log( '[Created] ' +
         createGrid( data['rows'], data['cols'], container));
+    updateGridBorders();
 }
 
 function createGrid( rowSize, colSize, target) {
