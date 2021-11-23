@@ -17,13 +17,14 @@ let data = {
     color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
     boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
     rows: gridSize, cols: gridSize, windowSize: windowSize, gridState: true,
-    darkenState: false, lightenState: false, darkValue: 0, lightValue: 0
+    darkenState: false, lightenState: false, grayValue: 0
 };
 
 updateGrid();
 
 console.log("[Created] " + 
-    createButtons( buttonClasses, buttonText, panel) + " Buttons");
+    createButtons( buttonClasses, buttonText, panel) + " Buttons"
+);
 
 //function.bind allows us to pass an argument to function when used
 //as a callback argument to addEventListener().
@@ -34,19 +35,35 @@ sliders.addEventListener( 'input', useSliderValues);
 
 let hoverModeBind = hoverMode.bind( null);
 let selectModeBind = selectMode.bind( null);
+let eraserModeBind =  eraserModeToggle.bind( null);
 
 panel.addEventListener( 'click', getMode.bind(
-    null, hoverModeBind, selectModeBind, container)); 
+    null, hoverModeBind, selectModeBind, container
+)); 
 
 //dbl click to select Mode or click and drag to hover Mode
 container.addEventListener( 'dblclick', selectModeBind);
 container.addEventListener( 'mousedown', (e) => {
+    if ( e.which === 3) {
+        normalModeToggle();
+        eraserModeToggle();
+    }
     container.addEventListener( 'mousemove', hoverModeBind);
-    e.preventDefault()
+    e.preventDefault();
 });
 container.addEventListener( 'mouseup', (e) => {
     container.removeEventListener( 'mousemove', hoverModeBind);
+    if ( e.which === 3) {
+        eraserModeToggle();
+        normalModeToggle();
+    }
+    e.preventDefault();
 });
+// remove the contextmenu
+container.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+}, false);
 
 function getMode( hoverModeBind, selectModeBind, container, event) {
     console.log(event.target.className + ':1');
@@ -73,10 +90,8 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
     }
     else if (event.target.className === 'eraserMode') {
         console.log(data['currentEvent'] + ":4");
+        normalModeToggle();
         eraserModeToggle();
-        if (data['randomColorState']) {
-            randomColorToggle();
-        }
     }
     else if (event.target.className === 'randomMode') {
         console.log( data['currentEvent'] + ":5");
@@ -88,12 +103,18 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
     else if (event.target.className === 'darken') {
         console.log( data['currentEvent'] + ":6");
         normalModeToggle();
-        data['darkValue'] -= 0.10;
+        data['darkenState'] = true;
+        if ( data['grayValue'] > 0) data['grayValue'] = 0;
+        data['grayValue'] = data['grayValue'] - 0.10;
+        console.log( data['grayValue']);
     }
     else if (event.target.className === 'lighten') {
         console.log( data['currentEvent'] + ":7");
         normalModeToggle();
-        data['lightValue'] += 0.10;
+        data['lightenState'] = true;
+        if ( data['grayValue'] < 0) data['grayValue'] = 0;
+        data['grayValue'] = data['grayValue'] + 0.10;
+        console.log( data['grayValue']);
     }
     else if (event.target.className === 'toggleGrid') {
         console.log( data['currentEvent'] + ":8");
@@ -166,7 +187,7 @@ function hoverMode( event) {
 }
 
 function selectMode( event) {
-    let color = getCurrentColor();
+    let color = getCurrentColor( event);
     let brushSize = data['brushSize']
     let rows = data['rows'];
     let cols = data['cols'];
@@ -196,7 +217,7 @@ function selectMode( event) {
         let x = ( col_start < 0) ? 0: col_start;
         while ( x <= col_end) {
             let square = rowNode.childNodes.item(x);
-            square.style['background-color'] = getCurrentColor();
+            square.style['background-color'] = getCurrentColor( event);
             x++;
         }
         y++;
@@ -274,7 +295,7 @@ function updateRandomColor() {
     return data['randomColor'];
 }
 
-function getCurrentColor() {
+function getCurrentColor( event) {
     let color = '#000000';
     if ( data['eraserModeState']) {
         color = data['eraserColor'];
@@ -284,12 +305,13 @@ function getCurrentColor() {
         color = data['randomColor'];
     }
     else if (data['darkenState']) {
-        color = pSBC( data['darkValue'], data['color']);
+        color = pSBC( data['grayValue'], event.target.style['background-color']);
     }
     else if ( data['lightenState']) {
-        color = pSBC( data['lightValue'], data['color']);
+        color = pSBC( data['grayValue'], event.target.style['background-color']);
     }
     else {
+        console.log('[normal]');
         color = data['color']
     }
     console.log( color + " in use");
@@ -331,7 +353,7 @@ function restAll( event) {
         color: color, eraserModeState: false, eraserColor: eraserColor, randomColorState: false, randomColor: '#000000',
         boardColor: boardColor, brushSize: brushSize, currentMode: null, currentEvent: '',
         rows: gridSize, cols: gridSize, windowSize: windowSize, gridState: true,
-        darkenState: false, lightenState: false, darkValue: 0, lightValue: 0
+        darkenState: false, lightenState: false, grayValue: 0
     };
     data = default_data;
 
