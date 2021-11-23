@@ -1,5 +1,3 @@
-//create a 16 by 16 grid using div elements
-
 const container = document.getElementsByClassName("container")[0];
 const panel = document.querySelector('.panel');
 const sliders = document.querySelector('.sliders');
@@ -66,10 +64,8 @@ container.addEventListener('contextmenu', function(e) {
 }, false);
 
 function getMode( hoverModeBind, selectModeBind, container, event) {
-    console.log(event.target.className + ':1');
 
     if (event.target.className === 'hoverMode') {
-        console.log(data['currentEvent'] + ":2");
         container.removeEventListener( data['currentEvent'], data['currentMode']);
 
         container.addEventListener( 'mousemove', hoverModeBind);
@@ -79,7 +75,6 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
         normalModeToggle();
     }
     else if (event.target.className === 'selectMode') {
-        console.log(data['currentEvent'] + ":3");
         container.removeEventListener( data['currentEvent'], data['currentMode']);
 
         container.addEventListener( 'click', selectModeBind);
@@ -89,47 +84,35 @@ function getMode( hoverModeBind, selectModeBind, container, event) {
         normalModeToggle();
     }
     else if (event.target.className === 'eraserMode') {
-        console.log(data['currentEvent'] + ":4");
         normalModeToggle();
         eraserModeToggle();
     }
     else if (event.target.className === 'randomMode') {
-        console.log( data['currentEvent'] + ":5");
         randomColorToggle();
         if (data['eraserModeState']) {
             eraserModeToggle();
         }
     }
     else if (event.target.className === 'darken') {
-        console.log( data['currentEvent'] + ":6");
         normalModeToggle();
         data['darkenState'] = true;
         if ( data['grayValue'] > 0) data['grayValue'] = 0;
         data['grayValue'] = data['grayValue'] - 0.10;
-        console.log( data['grayValue']);
     }
     else if (event.target.className === 'lighten') {
-        console.log( data['currentEvent'] + ":7");
         normalModeToggle();
         data['lightenState'] = true;
         if ( data['grayValue'] < 0) data['grayValue'] = 0;
         data['grayValue'] = data['grayValue'] + 0.10;
-        console.log( data['grayValue']);
     }
     else if (event.target.className === 'toggleGrid') {
-        console.log( data['currentEvent'] + ":8");
         toggleBorders();
     }
     else if (event.target.className === 'clearMode') {
-        console.log( data['currentEvent'] + ":9");
         updateGrid();
     }
     else if (event.target.className === 'restAll') {
-        console.log( data['currentEvent'] + ":0");
         restAll();
-    }
-    else {
-        console.log( "out of catch");
     }
 }
 
@@ -162,11 +145,9 @@ function removeAllChildern( parent) {
     while ( parent.firstChild) {
         while ( parent.firstChild.firstChild) {
             parent.firstChild.removeChild( parent.firstChild.firstChild);
-            //removes a square as long there's a square
             elements++;
         }
         parent.removeChild( parent.firstChild);
-        //removes a row as long there's a row
         elements++;
     }
     return elements;
@@ -192,7 +173,6 @@ function selectMode( event) {
     let rows = data['rows'];
     let cols = data['cols'];
 
-    console.log('selct mode' + brushSize + color);
     //get the coordinates of the current target square
     let col = Array.prototype.indexOf.call(
         event.target.parentNode.childNodes, event.target);
@@ -226,24 +206,24 @@ function selectMode( event) {
 
 function useSliderValues( event) {
     if ( event.target.className === 'color') {
-        console.log(data['color'] = event.target.value);
+        data['color'] = event.target.value;
     }
     else if ( event.target.className === 'eraserColor') {
-        console.log(data['eraserColor'] = event.target.value);
+        data['eraserColor'] = event.target.value;
     }
     else if ( event.target.className === 'boardColor') {
-        console.log(data['boardColor'] = event.target.value);
+        data['boardColor'] = event.target.value;
         updateGrid()
     }
     else if ( event.target.className === 'brushSize') {
-        console.log(data['brushSize'] = event.target.value);
+        data['brushSize'] = event.target.value;
     }
     else if ( event.target.className === 'gridSize') {
-        console.log(data['rows'] = data['cols'] = event.target.value);
+        data['rows'] = data['cols'] = event.target.value;
         updateGrid();
     }
     else if ( event.target.className === 'windowSize') {
-        console.log(data['windowSize'] = event.target.value + 'px');
+        data['windowSize'] = event.target.value + 'px';
         updateContainer();
     }
 }
@@ -285,7 +265,6 @@ function randomColorToggle() {
     else {
         data['randomColorState'] = true;
     }
-    console.log( '[set random] ' + data['randomColorState'] + ' ' + data['randomColor']);
 }
 
 function updateRandomColor() {
@@ -311,10 +290,8 @@ function getCurrentColor( event) {
         color = pSBC( data['grayValue'], event.target.style['background-color']);
     }
     else {
-        console.log('[normal]');
         color = data['color']
     }
-    console.log( color + " in use");
     return color;
 }
 
@@ -364,8 +341,6 @@ function restAll( event) {
 }
 
 //auto-detects and accepts HEX colors or RGB colors
-//shades colors to white or black by percentage
-//blends colors to white or black by percentage
 //use: pSBC(0.42, color);   42% lighter
 //use: pSBC(-0.4, color);   40% darker
 const pSBC=(p,c0,c1,l)=>{
